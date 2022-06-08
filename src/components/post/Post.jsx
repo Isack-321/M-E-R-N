@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import "./post.css";
 
  const Post = ({img}) =>{
+   
   return (
     <div className="post">
       <img
