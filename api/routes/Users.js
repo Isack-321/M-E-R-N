@@ -1,5 +1,5 @@
 const router= require("express").Router();
-const user= require("../model/User");
+const User= require("../model/User");
 const post= require("../model/Post");
 const bcrypt= require("bcrypt");
 
@@ -13,7 +13,7 @@ router.put("/:id", async(req, res)=>{
 
          }
          try {
-             const updatedUser = await user.findByIdAndUpdate(req.params.id,
+             const updatedUser = await User.findByIdAndUpdate(req.params.id,
                 {
                     $set: req.body,
                 },
@@ -34,12 +34,12 @@ router.put("/:id", async(req, res)=>{
 router.delete("/:id", async(req, res) => {
     if(req.body.userId === req.params.id){
         try {
-            const user = await user.findById(req.params.id);
+            const user = await User.findById(req.params.id);
         try{
             await post.deleteMany({username: user.username});
-            await user.findByIdAndDelete(req.params.id);
+            await User.findByIdAndDelete(req.params.id);
         } catch (error) {
-            res.status(500).json(err);
+            res.status(500).json(error);
         }
        
     }
@@ -54,11 +54,11 @@ router.delete("/:id", async(req, res) => {
 //GET USER
 router.get("/:id", async (req, res) => {
     try {
-      const user = await user.findById(req.params.id);
+      const user = await User.findById(req.params.id);
       const { password, ...others } = user._doc;
       res.status(200).json(others);
     } catch (err) {
-      res.status(500).json(err);
+      res.status(500).json("user not found" + " " + err);
     }
   });
   
